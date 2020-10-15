@@ -5,26 +5,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Topshelf;
 
-namespace MoniteerServer
+namespace MoniteerClient
 {
-    class Program
+    class MoniteerClient
     {
         static void Main(string[] args)
         {
             var exitCode = HostFactory.Run(x =>
             {
-                x.Service<Service>(s =>
+                x.Service<ClientService>(s =>
                 {
-                    s.ConstructUsing(service => new Service());
+                    s.ConstructUsing(service => new ClientService());
                     s.WhenStarted(service => service.Start());
                     s.WhenStopped(service => service.Stop());
                 });
 
                 x.RunAsLocalSystem();
 
-                x.SetServiceName("MoniteerServer");
-                x.SetDisplayName("Moniteer Server");
-                x.SetDescription("Server services for Moniteer.");
+                x.SetServiceName("MoniteerClient");
+                x.SetDisplayName("Moniteer Client");
+                x.SetDescription("Client service for Moniteer.");
             });
 
             int exitCodeValue = (int)Convert.ChangeType(exitCode, exitCode.GetTypeCode());

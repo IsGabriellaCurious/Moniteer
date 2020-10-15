@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{289CC70E-A554-4CA9-93BD-BA49B9483DA5}</ProjectGuid>
+    <ProjectGuid>{5F3789AA-BE8B-4247-A4A9-3B27D8DF8119}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MoniteerServer</RootNamespace>
-    <AssemblyName>MoniteerServer</AssemblyName>
+    <RootNamespace>MoniteerClient</RootNamespace>
+    <AssemblyName>MoniteerClient</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -49,11 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
-    <Compile Include="MoniteerServer.cs" />
-    <Compile Include="PacketSender.cs" />
+    <Compile Include="ClientHandle.cs" />
+    <Compile Include="ClientSend.cs" />
+    <Compile Include="ClientService.cs" />
+    <Compile Include="MoniteerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerHandle.cs" />
-    <Compile Include="ServerService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
