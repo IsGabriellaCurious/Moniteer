@@ -15,12 +15,15 @@ namespace MoniteerServer
         public static int dataBufferSize = 4096;
         public int internalId;
         public string machineName;
+        public bool console = false;
         public TCP tcp;
+        public UDP udp;
 
         public Client(int _internalId)
         {
             internalId = _internalId;
             tcp = new TCP(internalId);
+            udp = new UDP(internalId);
         }
 
         public class TCP
@@ -74,6 +77,7 @@ namespace MoniteerServer
                     int _byteLength = stream.EndRead(_result);
                     if (_byteLength <=0 )
                     {
+                        ServerService.clients[internalId].Disconnect();
                         return;
                     }
 
@@ -86,6 +90,7 @@ namespace MoniteerServer
                 catch (Exception e)
                 {
                     Console.WriteLine($"Client ERROR: {e}");
+                    ServerService.clients[internalId].Disconnect();
                 }
             }
 
@@ -128,6 +133,65 @@ namespace MoniteerServer
                 else
                     return false;
             }
+
+            public void Disconnect()
+            {
+                socket.Close();
+                stream = null;
+                receivedData = null;
+                receiveBuffer = null;
+                stream = null;
+            }
+        }
+
+        public class UDP
+        {
+            public IPEndPoint endPoint;
+
+            private int internalId;
+
+            public UDP(int _internalId)
+            {
+                internalId = _internalId;
+            }
+
+            public void Connect(IPEndPoint _endPoint)
+            {
+                endPoint = _endPoint;
+            }
+
+            public void SendData(Packet _packet)
+            {
+                ServerService.SendUDPData(endPoint, _packet);
+            }
+
+            public void HandleData(Packet _packetData)
+            {
+                int _packetLength = _packetData.ReadInt();
+                byte[] _packetBytes = _packetData.ReadBytes(_packetLength);
+
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet _packet = new Packet(_packetBytes))
+                    {
+                        int _packetId = _packet.ReadInt();
+                        ServerService.packetHandlers[_packetId](internalId, _packet);
+                    }
+                });
+            }
+
+            public void Disconnect()
+            {
+                endPoint = null;
+            }
+        }
+
+        private void Disconnect()
+        {
+            Console.WriteLine($"DEBUG: {tcp.socket.Client.RemoteEndPoint} has disconnected.");
+
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }

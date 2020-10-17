@@ -9,13 +9,15 @@ namespace MoniteerLib
     /// <summary>Sent from server to client.</summary>
     public enum ServerPackets
     {
-        welcome = 1
+        welcome = 1,
+        passwordCheckResponse
     }
 
     /// <summary>Sent from client to server.</summary>
     public enum ClientPackets
     {
-        welcomeReceived = 1
+        welcomeReceived = 1,
+        passwordCheck
     }
 
     public class Packet : IDisposable

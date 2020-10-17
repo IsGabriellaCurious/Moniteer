@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Topshelf;
 
 namespace MoniteerClient
 {
     class MoniteerClient
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var exitCode = HostFactory.Run(x =>
             {
                 x.Service<ClientService>(s =>
                 {
                     s.ConstructUsing(service => new ClientService());
-                    s.WhenStarted(service => service.Start());
+                    s.WhenStarted(service => service.Start(false));
                     s.WhenStopped(service => service.Stop());
                 });
 

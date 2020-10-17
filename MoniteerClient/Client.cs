@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,9 +20,15 @@ namespace MoniteerClient
         public int port = 971;
         public int internalId;
         public TCP tcp;
+        public UDP udp;
+
+        private bool isConnected = false;
+        public bool console;
 
         private delegate void PacketHandler(Packet _packet);
         private static Dictionary<int, PacketHandler> packetHandlers;
+
+        public Dictionary<int, Constants.ConsoleHandler> consoleHandlers;
 
         public Client()
         {
@@ -29,11 +37,14 @@ namespace MoniteerClient
                 instance = this;
             }
             tcp = new TCP();
+            udp = new UDP();
         }
 
-        public void ConnectToServer()
+        public void ConnectToServer(bool _console)
         {
             InitializeClientData();
+            isConnected = true;
+            console = _console;
             tcp.Connect();
         }
 
@@ -82,7 +93,7 @@ namespace MoniteerClient
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Packet ERROR: {e}");
+                    Console.WriteLine($"TCP Packet ERROR: {e}");
                 }
             }
 
@@ -93,6 +104,7 @@ namespace MoniteerClient
                     int _byteLength = stream.EndRead(_result);
                     if (_byteLength <= 0)
                     {
+                        instance.Disconnect();
                         return;
                     }
 
@@ -105,7 +117,8 @@ namespace MoniteerClient
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Client ERROR: {e}");
+                    Console.WriteLine($"TCP Client ERROR: {e}");
+                    Disconnect();
                 }
             }
 
@@ -148,15 +161,127 @@ namespace MoniteerClient
                 else
                     return false;
             }
+
+            private void Disconnect()
+            {
+                instance.Disconnect();
+
+                stream = null;
+                receivedData = null;
+                receiveBuffer = null;
+                socket = null;
+            }
+        }
+
+        public class UDP
+        {
+            public UdpClient socket;
+            public IPEndPoint endPoint;
+
+            public UDP()
+            {
+                endPoint = new IPEndPoint(IPAddress.Parse(instance.ip), instance.port);
+            }
+
+            public void Connect(int _localPort)
+            {
+                socket = new UdpClient(_localPort);
+                socket.Connect(endPoint);
+                socket.BeginReceive(ReceiveCallback, null);
+
+                using (Packet _packet = new Packet())
+                {
+                    SendData(_packet);
+                }
+            }
+
+            public void SendData(Packet _packet)
+            {
+                try
+                {
+                    _packet.InsertInt(instance.internalId);
+
+                    if (socket == null)
+                        return;
+
+                    socket.BeginSend(_packet.ToArray(), _packet.Length(), null, null);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"UDP Packet ERROR: {e}");
+                }
+            }
+        
+            private void ReceiveCallback(IAsyncResult _result)
+            {
+                try
+                {
+                    byte[] _data = socket.EndReceive(_result, ref endPoint);
+                    socket.BeginReceive(ReceiveCallback, null);
+
+                    if (_data.Length < 4)
+                    {
+                        instance.Disconnect();
+                        return;
+                    }
+
+                    HandleData(_data);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"UDP Client ERROR: {e}");
+                    Disconnect();
+                }
+            }
+
+            private void HandleData(byte[] _data)
+            {
+                using (Packet _packet = new Packet(_data))
+                {
+                    int _packetLength = _packet.ReadInt();
+                    _data = _packet.ReadBytes(_packetLength);
+                }
+
+                ThreadManager.ExecuteOnMainThread(() =>
+                {
+                    using (Packet _packet = new Packet(_data))
+                    {
+                        int _packetId = _packet.ReadInt();
+                        packetHandlers[_packetId](_packet);
+                    }
+                });
+            }
+
+            private void Disconnect()
+            {
+                instance.Disconnect();
+
+                endPoint = null;
+                socket = null;
+            }
+        
         }
 
         private void InitializeClientData()
         {
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
-                { (int)ServerPackets.welcome, ClientHandle.Welcome }
+                { (int)ServerPackets.welcome, ClientHandle.Welcome },
+                { (int)ServerPackets.passwordCheckResponse, ClientHandle.PasswordCheckResponse }
             };
             Console.WriteLine("Initlaized packets");
+        }
+
+        public void Disconnect()
+        {
+            if (isConnected)
+            {
+                isConnected = false;
+                tcp.socket.Close();
+                udp.socket.Close();
+
+                Console.WriteLine("Disconnected from server.");
+            }
         }
 
     }

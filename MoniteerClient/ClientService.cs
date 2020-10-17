@@ -13,7 +13,7 @@ namespace MoniteerClient
     public class ClientService
     {
 
-        private Client client;
+        public Client client;
 
         Thread mainThread;
         public bool mainThreadRunning;
@@ -23,18 +23,18 @@ namespace MoniteerClient
             client = new Client();
         }
 
-        public void Start()
+        public void Start(bool _console)
         {
-
             mainThreadRunning = true;
             mainThread = new Thread(new ThreadStart(MainThread));
             mainThread.Start();
 
-            client.ConnectToServer();
+            client.ConnectToServer(_console);
         }
 
         public void Stop()
         {
+            client.Disconnect();
             mainThread.Abort();
             mainThreadRunning = false;
         }

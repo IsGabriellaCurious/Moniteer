@@ -13,13 +13,36 @@ namespace MoniteerServer
         {
             int _id = _packet.ReadInt();
             string machineName = _packet.ReadString();
+            bool console = _packet.ReadBool();
 
-            if (_id != _from)
-            {
-                Console.WriteLine($"!! FATAL ERROR !! Machine name {machineName} with Server ID {_from} has returned an invalid ID: {_id}");
+            if (!IdAuthentic(_from, _id))
                 return;
+
+            if (console)
+                ServerService.clients[_id].console = true;
+
+            Console.WriteLine($"DEBUG: Client ID {_id} WELCOME RESPONSE: NAME {machineName}, IP {ServerService.clients[_from].tcp.socket.Client.RemoteEndPoint}, CONSOLE: {console.ToString()}");
+        }
+
+        public static void PasswordCheck(int _from, Packet _packet)
+        {
+            int _id = _packet.ReadInt();
+            string password = _packet.ReadString();
+
+            if (!IdAuthentic(_from, _id))
+                return;
+
+            PacketSender.PasswordVaild(_id, password.Equals(ServerService.password));
+        }
+
+        private static bool IdAuthentic(int _from, int _received)
+        {
+            if (_from != _received)
+            {
+                Console.WriteLine($"!! FATAL ERROR !! Machine with Server ID {_from} has returned an invalid ID: {_received}");
+                return false;
             }
-            Console.WriteLine($"DEBUG: Client ID {_id} WELCOME RESPONSE: NAME {machineName}, IP {ServerService.clients[_from].tcp.socket.Client.RemoteEndPoint}");
+            return true;
         }
     }
 }

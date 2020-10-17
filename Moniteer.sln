@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoniteerClient", "MoniteerC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoniteerLib", "MoniteerLib\MoniteerLib.csproj", "{64B9E9A9-945B-420C-873C-05BB4B827BEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoniteerConsole", "MoniteerConsole\MoniteerConsole.csproj", "{D2C8D0FF-F374-4BCD-BEE1-65A937C87558}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{64B9E9A9-945B-420C-873C-05BB4B827BEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64B9E9A9-945B-420C-873C-05BB4B827BEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64B9E9A9-945B-420C-873C-05BB4B827BEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2C8D0FF-F374-4BCD-BEE1-65A937C87558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C8D0FF-F374-4BCD-BEE1-65A937C87558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C8D0FF-F374-4BCD-BEE1-65A937C87558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C8D0FF-F374-4BCD-BEE1-65A937C87558}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

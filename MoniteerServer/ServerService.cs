@@ -15,6 +15,7 @@ namespace MoniteerServer
     {
 
         private TcpListener tcpListener;
+        private static UdpClient udpListener;
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
         public delegate void PacketHandler(int _client, Packet _packet);
         public static Dictionary<int, PacketHandler> packetHandlers;
@@ -23,6 +24,7 @@ namespace MoniteerServer
         public bool mainThreadRunning; 
 
         private int currentId = 0; //top quality id method
+        public static string password = "mrjames"; //quality password shit
 
         public ServerService()
         {
@@ -34,6 +36,9 @@ namespace MoniteerServer
             tcpListener = new TcpListener(IPAddress.Any, 971);
             tcpListener.Start();
             tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
+
+            udpListener = new UdpClient(971);
+            udpListener.BeginReceive(UDPReceiveCallback, null);
 
             InitializeServerData();
             mainThreadRunning = true;
@@ -54,6 +59,8 @@ namespace MoniteerServer
         private void TCPConnectCallback(IAsyncResult _result)
         {
             TcpClient _client = tcpListener.EndAcceptTcpClient(_result);
+            if (_client == null)
+                return;
             tcpListener.BeginAcceptTcpClient(new AsyncCallback(TCPConnectCallback), null);
 
             clients.Add(currentId, new Client(currentId));
@@ -61,6 +68,63 @@ namespace MoniteerServer
 
             Console.WriteLine($"Client connected: {_client.Client.RemoteEndPoint} with ID {currentId}");
             currentId++;
+        }
+
+        private void UDPReceiveCallback(IAsyncResult _result)
+        {
+            try
+            {
+                IPEndPoint _clientEndPoint = new IPEndPoint(IPAddress.Any, 0);
+                byte[] _data = udpListener.EndReceive(_result, ref _clientEndPoint);
+                udpListener.BeginReceive(UDPReceiveCallback, null);
+
+                if (_data.Length < 4)
+                    return;
+
+                using (Packet _packet = new Packet(_data))
+                {
+                    int _clientId = _packet.ReadInt();
+
+                    if (clients[_clientId] == null)
+                    {
+                        Console.WriteLine($"UDP Packet ERROR: Received data from client {_clientId} which does not exist!");
+                        return;
+                    }
+
+                    if (clients[_clientId].udp.endPoint == null) //new connection
+                    {
+                        clients[_clientId].udp.Connect(_clientEndPoint);
+                        return;
+                    }
+
+                    if (clients[_clientId].udp.endPoint.ToString() != _clientEndPoint.ToString())
+                    {
+                        Console.WriteLine($"UDP Packet ERROR: {_clientEndPoint.ToString()} tried to impersonate client {_clientId}. Packet discarded.");
+                        return;
+                    }
+
+                    clients[_clientId].udp.HandleData(_packet);
+                }
+            } 
+            catch (Exception e)
+            {
+                Console.WriteLine($"UDP Packet ERROR: {e}");
+            }
+        }
+
+        public static void SendUDPData(IPEndPoint _clientEndPoint, Packet _packet)
+        {
+            try
+            {
+                if (_clientEndPoint == null)
+                    return;
+
+                udpListener.BeginSend(_packet.ToArray(), _packet.Length(), _clientEndPoint, null, null);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"UDP Packet ERROR: Error sending data to {_clientEndPoint}: {e}");
+            }
         }
 
         private void MainThread()
@@ -88,7 +152,8 @@ namespace MoniteerServer
         {
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
-                { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived }
+                { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
+                { (int)ClientPackets.passwordCheck, ServerHandle.PasswordCheck }
             };
         }
 
