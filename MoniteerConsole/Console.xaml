@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoniteerConsole"
         mc:Ignorable="d"
-        Title="Console" Height="450" Width="800">
+        Title="Moniteer Console" Height="810" Width="1440" Icon="Logo Grey.png" WindowStartupLocation="CenterScreen" FontFamily="Calibri">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75" />
+            <RowDefinition Height="75" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
         
+        <!-- Top menu selection -->
+        <Rectangle Grid.ColumnSpan="3" Grid.Row="0" Fill="#FF43464B"  />
+
+
+
+        <!-- Lower grid -->
+        <Rectangle Grid.ColumnSpan="3" Grid.Row="3" Fill="#FF43464B"/>
+        <TextBlock Grid.ColumnSpan="3" Grid.Row="3" Text="0 Wortkstations Selected | © Moniteer" Foreground="White" FontSize="24" TextAlignment="Right" Padding="0,5,10,0"/>
     </Grid>
 </Window>

@@ -21,12 +21,26 @@ namespace MoniteerConsole.errors
     {
         public ErrorLogin()
         {
+            App.login.IsEnabled = false;
             InitializeComponent();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.login.IsEnabled = true;
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Close();
+            }
         }
     }
 }

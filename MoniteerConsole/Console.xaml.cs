@@ -22,9 +22,7 @@ namespace MoniteerConsole
         public Console()
         {
 
-            Login login = Window.GetWindow(this) as Login;
-            if (login != null)
-                login.Close();
+            App.login.Close();
 
             var splash = new SplashScreen("splash.png");
             splash.Show(false);

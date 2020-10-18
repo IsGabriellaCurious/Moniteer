@@ -19,6 +19,7 @@ namespace MoniteerConsole
 
         public static ClientService clientService;
         public static SplashScreen startSplash;
+        public static Login login;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -31,6 +32,12 @@ namespace MoniteerConsole
                 { (int)ServerPackets.passwordCheckResponse, ConsoleHandler.PasswordCheckResponse }
             };
             clientService.Start(true);
+
+            Current.Dispatcher.Invoke((Action)(() =>
+            {
+                login = new Login();
+                login.Show();
+            }));
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

@@ -16,6 +16,7 @@ namespace MoniteerServer
         public int internalId;
         public string machineName;
         public bool console = false;
+        public bool consoleAuth = false;
         public TCP tcp;
         public UDP udp;
 

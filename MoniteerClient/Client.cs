@@ -70,16 +70,24 @@ namespace MoniteerClient
 
             public void ConnectCallback(IAsyncResult _result)
             {
-                socket.EndConnect(_result);
+                try
+                {
+                    socket.EndConnect(_result);
 
-                if (!socket.Connected)
-                    return;
+                    if (!socket.Connected)
+                        return;
 
-                stream = socket.GetStream();
+                    stream = socket.GetStream();
 
-                receivedData = new Packet();
+                    receivedData = new Packet();
 
-                stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                    stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
+                } 
+                catch (Exception e)
+                {
+                    Console.WriteLine("Server refused the connection. Is it online?");
+                    Disconnect();
+                }
             }
 
             public void SendData(Packet _packet)

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoniteerConsole.errors"
         mc:Ignorable="d"
-        Title="Error" Height="160.824" Width="200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Background="#FF43464B">
+        Title="Error" Height="160.824" Width="200" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Background="#FF43464B" Closing="Window_Closing" KeyDown="Window_KeyDown">
     <Grid>
         <TextBlock HorizontalAlignment="Left" Margin="19,36,0,0" TextWrapping="Wrap" Text="Incorrect Password" VerticalAlignment="Top" FontSize="20" FontFamily="Calibri" Width="158" Foreground="White"/>
         <Button Content="OK" HorizontalAlignment="Left" Margin="57,77,0,0" VerticalAlignment="Top" Width="77" Height="24" Click="Button_Click"/>

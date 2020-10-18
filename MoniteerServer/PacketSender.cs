@@ -39,6 +39,7 @@ namespace MoniteerServer
                 _packet.Write(_correct);
 
                 SendTCPData(_clientId, _packet);
+                ServerService.clients[_clientId].consoleAuth = _correct;
             }
         }
     }

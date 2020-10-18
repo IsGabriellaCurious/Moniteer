@@ -32,5 +32,11 @@ namespace MoniteerConsole
         {
             ClientSend.PasswordCheck(passwordBox.Password.ToString());
         }
+
+        private void passwordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                ClientSend.PasswordCheck(passwordBox.Password.ToString());
+        }
     }
 }
