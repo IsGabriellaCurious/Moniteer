@@ -1,0 +1,16 @@
+﻿<Window x:Class="MoniteerConsole.ClientActionMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MoniteerConsole"
+        mc:Ignorable="d"
+        Title="yeetus deetus" Height="500" Width="300" Icon="/MoniteerConsole;component/Logo Grey.png" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF43464B" FontFamily="Calibri" FontSize="18" Foreground="White">
+    <Grid>
+        <TextBlock Margin="104,19,95,0" TextWrapping="Wrap" Text="Messaging" VerticalAlignment="Top" HorizontalAlignment="Center" Width="95" TextAlignment="Center"/>
+        <Button Content="Send Msg" HorizontalAlignment="Left" Margin="21,60,0,0" VerticalAlignment="Top" Width="81" Click="sendMsg_button_click" />
+        <Button Content="Open Chat" HorizontalAlignment="Left" Margin="109,60,0,0" VerticalAlignment="Top" Width="81" Click="openChat_button_click" />
+        <Button Content="Do a dab" HorizontalAlignment="Left" Margin="198,60,0,0" VerticalAlignment="Top" Width="81" Click="doADab_button_click" />
+
+    </Grid>
+</Window>

@@ -42,5 +42,27 @@ namespace MoniteerServer
                 ServerService.clients[_clientId].consoleAuth = _correct;
             }
         }
+
+        public static void ClientList(int _clientId)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.clientListResponse))
+            {
+                Dictionary<int, string> clientsNoConsole = new Dictionary<int, string>();
+                foreach (KeyValuePair<int, Client> entry in ServerService.clients)
+                {
+                    int i = entry.Key;
+                    Client c = entry.Value;
+
+                    if (c.console)
+                        continue;
+
+                    clientsNoConsole.Add(i, c.machineName);
+                }
+
+                _packet.Write(clientsNoConsole);
+
+                SendTCPData(_clientId, _packet);
+            }
+        }
     }
 }

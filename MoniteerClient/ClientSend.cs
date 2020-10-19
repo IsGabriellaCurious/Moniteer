@@ -43,5 +43,15 @@ namespace MoniteerClient
                 SendTCPData(_packet);
             }
         }
+
+        public static void ClientList()
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.clientList))
+            {
+                _packet.Write(Client.instance.internalId);
+
+                SendTCPData(_packet);
+            }
+        }
     }
 }

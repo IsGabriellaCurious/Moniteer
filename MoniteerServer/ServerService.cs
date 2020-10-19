@@ -17,6 +17,7 @@ namespace MoniteerServer
         private TcpListener tcpListener;
         private static UdpClient udpListener;
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
+        public static Dictionary<int, string> clientIds = new Dictionary<int, string>();
         public delegate void PacketHandler(int _client, Packet _packet);
         public static Dictionary<int, PacketHandler> packetHandlers;
 
@@ -153,7 +154,8 @@ namespace MoniteerServer
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
-                { (int)ClientPackets.passwordCheck, ServerHandle.PasswordCheck }
+                { (int)ClientPackets.passwordCheck, ServerHandle.PasswordCheck },
+                { (int)ClientPackets.clientList, ServerHandle.ClientList }
             };
         }
 

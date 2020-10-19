@@ -275,7 +275,8 @@ namespace MoniteerClient
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
                 { (int)ServerPackets.welcome, ClientHandle.Welcome },
-                { (int)ServerPackets.passwordCheckResponse, ClientHandle.PasswordCheckResponse }
+                { (int)ServerPackets.passwordCheckResponse, ClientHandle.PasswordCheckResponse },
+                { (int)ServerPackets.clientListResponse, ClientHandle.ClientListResponse },
             };
             Console.WriteLine("Initlaized packets");
         }
@@ -286,7 +287,7 @@ namespace MoniteerClient
             {
                 isConnected = false;
                 tcp.socket.Close();
-                udp.socket.Close();
+                //udp.socket.Close();
 
                 Console.WriteLine("Disconnected from server.");
             }

@@ -55,7 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Console.xaml">
+    <Page Include="clientAction\ClientActionMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="errors\FNYIError.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MConsoleApp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -71,8 +79,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Console.xaml.cs">
-      <DependentUpon>Console.xaml</DependentUpon>
+    <Compile Include="clientAction\ClientActionMenu.xaml.cs">
+      <DependentUpon>ClientActionMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="errors\FNYIError.xaml.cs">
+      <DependentUpon>FNYIError.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MConsoleApp.xaml.cs">
+      <DependentUpon>MConsoleApp.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConsoleHandler.cs" />
     <Compile Include="errors\ErrorLogin.xaml.cs">

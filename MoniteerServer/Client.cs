@@ -191,6 +191,9 @@ namespace MoniteerServer
         {
             Console.WriteLine($"DEBUG: {tcp.socket.Client.RemoteEndPoint} has disconnected.");
 
+            ServerService.clients.Remove(internalId);
+            ServerService.clientIds.Remove(internalId);
+
             tcp.Disconnect();
             udp.Disconnect();
         }

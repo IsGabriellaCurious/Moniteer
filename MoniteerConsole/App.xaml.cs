@@ -1,4 +1,5 @@
 ﻿using MoniteerClient;
+using MoniteerConsole.errors;
 using MoniteerLib;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace MoniteerConsole
         public static ClientService clientService;
         public static SplashScreen startSplash;
         public static Login login;
+        public static MConsoleApp console;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
@@ -29,7 +31,8 @@ namespace MoniteerConsole
             clientService = new ClientService();
             clientService.client.consoleHandlers = new Dictionary<int, Constants.ConsoleHandler>()
             {
-                { (int)ServerPackets.passwordCheckResponse, ConsoleHandler.PasswordCheckResponse }
+                { (int)ServerPackets.passwordCheckResponse, ConsoleHandler.PasswordCheckResponse },
+                { (int)ServerPackets.clientListResponse, ConsoleHandler.ClientListResponse }
             };
             clientService.Start(true);
 
@@ -43,6 +46,15 @@ namespace MoniteerConsole
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             clientService.Stop();
+        }
+
+        public static void NotYetImplemented()
+        {
+            Current.Dispatcher.Invoke((Action)(() =>
+            {
+                FNYIError err = new FNYIError();
+                err.Show();
+            }));
         }
     }
 }

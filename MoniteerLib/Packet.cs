@@ -10,14 +10,16 @@ namespace MoniteerLib
     public enum ServerPackets
     {
         welcome = 1,
-        passwordCheckResponse
+        passwordCheckResponse,
+        clientListResponse
     }
 
     /// <summary>Sent from client to server.</summary>
     public enum ClientPackets
     {
         welcomeReceived = 1,
-        passwordCheck
+        passwordCheck,
+        clientList
     }
 
     public class Packet : IDisposable
@@ -160,6 +162,21 @@ namespace MoniteerLib
         {
             Write(_value.Length); // Add the length of the string to the packet
             buffer.AddRange(Encoding.ASCII.GetBytes(_value)); // Add the string itself
+        }
+        /// <summary>Adds a dictionary to the packet.</summary>
+        /// <param name="_value">The dicitonary to add.</param>
+        public void Write(Dictionary<int, string> _value)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(KeyValuePair<int, string> entry in _value)
+            {
+                int i = entry.Key;
+                string s = entry.Value;
+                if (!sb.ToString().Equals(""))
+                    sb.Append(",");
+                sb.Append(i.ToString() + ":" + s);
+            }
+            Write(sb.ToString());
         }
         #endregion
 
@@ -330,6 +347,33 @@ namespace MoniteerLib
             catch
             {
                 throw new Exception("Could not read value of type 'string'!");
+            }
+        }
+
+        /// <summary>Reads a directory from the packet.</summary>
+        /// <param name="_moveReadPos">Whether or not to move the buffer's read position.</param>
+        public Dictionary<int, string> ReadDictionary(bool _moveReadPos = true)
+        {
+            try
+            {
+                string dic = ReadString(_moveReadPos);
+                if (dic == null || dic.Length == 0 || dic.Equals(""))
+                    return new Dictionary<int, string>();
+
+                Dictionary<int, string> toReturn = new Dictionary<int, string>();
+                string[] entries = dic.Split(',');
+                foreach (string e in entries)
+                {
+                    string[] parts = e.Split(':');
+                    toReturn.Add(Int32.Parse(parts[0]), parts[1]);
+                }
+
+                return toReturn;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Could not read this dictionary shit: {e}");
+                return new Dictionary<int, string>();
             }
         }
         #endregion

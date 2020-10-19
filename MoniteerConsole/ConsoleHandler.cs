@@ -18,8 +18,8 @@ namespace MoniteerConsole
             {
                 System.Windows.Application.Current.Dispatcher.Invoke((Action)(() =>
                 {
-                    Console console = new Console();
-                    console.Show();
+                    App.console = new MConsoleApp();
+                    App.console.Show();
                 }));
             } 
             else
@@ -30,6 +30,11 @@ namespace MoniteerConsole
                     errorLogin.Show();
                 }));
             }
+        }
+
+        public static void ClientListResponse(Packet _packet)
+        {
+            App.console.HandleNewClientList(_packet.ReadDictionary());
         }
     }
 }

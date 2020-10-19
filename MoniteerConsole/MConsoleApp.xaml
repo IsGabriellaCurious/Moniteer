@@ -1,4 +1,4 @@
-﻿<Window x:Class="MoniteerConsole.Console"
+﻿<Window x:Class="MoniteerConsole.MConsoleApp"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -12,7 +12,6 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="75" />
-            <RowDefinition Height="75" />
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
@@ -20,10 +19,13 @@
         <!-- Top menu selection -->
         <Rectangle Grid.ColumnSpan="3" Grid.Row="0" Fill="#FF43464B"  />
 
-
+        <!-- Client List -->
+        <StackPanel x:Name="clientListPannel" Grid.Row="1" />
 
         <!-- Lower grid -->
-        <Rectangle Grid.ColumnSpan="3" Grid.Row="3" Fill="#FF43464B"/>
-        <TextBlock Grid.ColumnSpan="3" Grid.Row="3" Text="0 Wortkstations Selected | © Moniteer" Foreground="White" FontSize="24" TextAlignment="Right" Padding="0,5,10,0"/>
+        <Rectangle Grid.ColumnSpan="3" Grid.Row="2" Fill="#FF43464B"/>
+        <TextBlock Grid.ColumnSpan="3" Grid.Row="2" Text="Console Alpha | © Moniteer" Foreground="White" FontSize="24" TextAlignment="Right" Padding="0,5,10,0"/>
+        <Button x:Name="refreshClientsButton" Grid.Row="2" Width="150" Height="30" Content="Refresh Clients" HorizontalAlignment="Left" FontSize="18" Click="refreshClientsButton_Click" Padding="4,1,1,1" Margin="10,0,0,0" />
+
     </Grid>
 </Window>

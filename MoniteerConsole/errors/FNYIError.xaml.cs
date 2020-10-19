@@ -12,24 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MoniteerConsole
+namespace MoniteerConsole.errors
 {
     /// <summary>
-    /// Interaction logic for Console.xaml
+    /// Interaction logic for ErrorLogin.xaml
     /// </summary>
-    public partial class Console : Window
+    public partial class FNYIError : Window
     {
-        public Console()
+        public FNYIError()
         {
-
-            App.login.Close();
-
-            var splash = new SplashScreen("splash.png");
-            splash.Show(false);
-
             InitializeComponent();
+        }
 
-            splash.Close(TimeSpan.FromSeconds(0));
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Close();
+            }
         }
     }
 }

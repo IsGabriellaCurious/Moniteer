@@ -21,6 +21,9 @@ namespace MoniteerServer
             if (console)
                 ServerService.clients[_id].console = true;
 
+            ServerService.clients[_id].machineName = machineName;
+            ServerService.clientIds.Add(_id, machineName);
+
             Console.WriteLine($"DEBUG: Client ID {_id} WELCOME RESPONSE: NAME {machineName}, IP {ServerService.clients[_from].tcp.socket.Client.RemoteEndPoint}, CONSOLE: {console.ToString()}");
         }
 
@@ -35,6 +38,16 @@ namespace MoniteerServer
             PacketSender.PasswordVaild(_id, password.Equals(ServerService.password));
         }
 
+        public static void ClientList(int _from, Packet _packet)
+        {
+            int _id = _packet.ReadInt();
+
+            if (!IdAuthentic(_from, _id) || !IsConsole(_id) || !ConsoleAuthed(_id))
+                return;
+
+            PacketSender.ClientList(_id);
+        }
+
         private static bool IdAuthentic(int _from, int _received)
         {
             if (_from != _received)
@@ -43,6 +56,16 @@ namespace MoniteerServer
                 return false;
             }
             return true;
+        }
+
+        private static bool IsConsole(int _id)
+        {
+            return ServerService.clients[_id].console;
+        }
+
+        private static bool ConsoleAuthed(int _id)
+        {
+            return ServerService.clients[_id].consoleAuth;
         }
     }
 }
