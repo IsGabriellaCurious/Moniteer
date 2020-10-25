@@ -11,7 +11,8 @@ namespace MoniteerLib
     {
         welcome = 1,
         passwordCheckResponse,
-        clientListResponse
+        clientListResponse,
+        consoleMsgForward
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -19,7 +20,8 @@ namespace MoniteerLib
     {
         welcomeReceived = 1,
         passwordCheck,
-        clientList
+        clientList,
+        consoleMsgSend
     }
 
     public class Packet : IDisposable

@@ -23,6 +23,8 @@ namespace MoniteerConsole
         public static Login login;
         public static MConsoleApp console;
 
+        public static string loggedInUser;
+
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             startSplash = new SplashScreen("splash.png");
@@ -35,6 +37,8 @@ namespace MoniteerConsole
                 { (int)ServerPackets.clientListResponse, ConsoleHandler.ClientListResponse }
             };
             clientService.Start(true);
+
+            loggedInUser = Environment.UserName;
 
             Current.Dispatcher.Invoke((Action)(() =>
             {

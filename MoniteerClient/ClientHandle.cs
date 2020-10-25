@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MoniteerClient
 {
@@ -30,6 +31,14 @@ namespace MoniteerClient
         public static void ClientListResponse(Packet _packet)
         {
             Client.instance.consoleHandlers[(int)ServerPackets.clientListResponse](_packet);
+        }
+
+        public static void ConsoleMsgForward(Packet _packet)
+        {
+            string _msg = _packet.ReadString();
+            string _from = _packet.ReadString();
+
+            MessageBox.Show(_msg, "Message from " + _from);
         }
 
     }

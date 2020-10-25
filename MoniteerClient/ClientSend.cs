@@ -53,5 +53,18 @@ namespace MoniteerClient
                 SendTCPData(_packet);
             }
         }
+
+        public static void ConsoleMsgSend(int _to, string _msg, string _from)
+        {
+            using (Packet _packet = new Packet((int)ClientPackets.consoleMsgSend))
+            {
+                _packet.Write(Client.instance.internalId);
+                _packet.Write(_to);
+                _packet.Write(_msg);
+                _packet.Write(_from);
+
+                SendTCPData(_packet);
+            }
+        }
     }
 }

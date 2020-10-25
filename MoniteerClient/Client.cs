@@ -277,6 +277,7 @@ namespace MoniteerClient
                 { (int)ServerPackets.welcome, ClientHandle.Welcome },
                 { (int)ServerPackets.passwordCheckResponse, ClientHandle.PasswordCheckResponse },
                 { (int)ServerPackets.clientListResponse, ClientHandle.ClientListResponse },
+                { (int)ServerPackets.consoleMsgForward, ClientHandle.ConsoleMsgForward }
             };
             Console.WriteLine("Initlaized packets");
         }

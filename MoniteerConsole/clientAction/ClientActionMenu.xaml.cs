@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MoniteerConsole.clientAction;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,12 +30,13 @@ namespace MoniteerConsole
             machineName = App.console.clients[clientId];
 
             InitializeComponent();
-            this.Title = "Perform an action on " + machineName;
+            this.Title = "Perform action on " + machineName;
         }
 
         private void sendMsg_button_click(object sender, RoutedEventArgs e)
         {
-            App.NotYetImplemented();
+            SendClientMsg scm = new SendClientMsg(clientId, machineName, this);
+            scm.Show();
         }
 
         private void openChat_button_click(object sender, RoutedEventArgs e)

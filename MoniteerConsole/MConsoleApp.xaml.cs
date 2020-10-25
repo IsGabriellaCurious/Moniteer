@@ -53,7 +53,7 @@ namespace MoniteerConsole
                     {
                         Content = name
                     };
-                    button.AddHandler(Button.MouseDoubleClickEvent, new RoutedEventHandler(OpenActionMenuButton));
+                    button.AddHandler(Button.ClickEvent, new RoutedEventHandler(OpenActionMenuButton));
 
                     clientListPannel.Children.Add(button);
                 }

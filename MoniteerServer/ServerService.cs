@@ -155,7 +155,8 @@ namespace MoniteerServer
             {
                 { (int)ClientPackets.welcomeReceived, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.passwordCheck, ServerHandle.PasswordCheck },
-                { (int)ClientPackets.clientList, ServerHandle.ClientList }
+                { (int)ClientPackets.clientList, ServerHandle.ClientList },
+                { (int)ClientPackets.consoleMsgSend, ServerHandle.ConsoleMsgSend }
             };
         }
 

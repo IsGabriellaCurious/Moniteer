@@ -59,6 +59,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="clientAction\SendClientMsg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="errors\FNYIError.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -81,6 +85,9 @@
     </Compile>
     <Compile Include="clientAction\ClientActionMenu.xaml.cs">
       <DependentUpon>ClientActionMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="clientAction\SendClientMsg.xaml.cs">
+      <DependentUpon>SendClientMsg.xaml</DependentUpon>
     </Compile>
     <Compile Include="errors\FNYIError.xaml.cs">
       <DependentUpon>FNYIError.xaml</DependentUpon>

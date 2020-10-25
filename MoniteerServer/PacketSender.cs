@@ -64,5 +64,16 @@ namespace MoniteerServer
                 SendTCPData(_clientId, _packet);
             }
         }
+
+        public static void ConsoleMsgForward(int _clientId, string _msg, string _from)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.consoleMsgForward))
+            {
+                _packet.Write(_msg);
+                _packet.Write(_from);
+
+                SendTCPData(_clientId, _packet);
+            }
+        }
     }
 }

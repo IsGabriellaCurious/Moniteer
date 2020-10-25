@@ -1,4 +1,5 @@
-﻿using MoniteerLib;
+﻿using Microsoft.SqlServer.Server;
+using MoniteerLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,21 @@ namespace MoniteerServer
                 return;
 
             PacketSender.ClientList(_id);
+        }
+
+
+        public static void ConsoleMsgSend(int _from, Packet _packet)
+        {
+            int _id = _packet.ReadInt();
+
+            if (!IdAuthentic(_from, _id) || !IsConsole(_id) || !ConsoleAuthed(_id))
+                return;
+
+            int _to = _packet.ReadInt();
+            string _msg = _packet.ReadString();
+            string _fromUser = _packet.ReadString();
+
+            PacketSender.ConsoleMsgForward(_to, _msg, _fromUser);
         }
 
         private static bool IdAuthentic(int _from, int _received)
